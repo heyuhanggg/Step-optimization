@@ -1,29 +1,32 @@
 # Step Optimization for Fast Diffusion Sampling
 
-> **Research preview.** This repository accompanies a manuscript that is currently under review. The present release intentionally contains only the core timestep-optimization module and a small set of precomputed CIFAR-10 schedules. Additional experiment runners, model-specific adapters, configurations, and evaluation scripts are planned for release after the review process.
+> **Publication status.** The accompanying paper, *Drift-aware Denoising-Uniform Step Optimization for Fast Diffusion Sampling*, was officially accepted by **Pattern Recognition (Elsevier)** on **September 15, 2026**.
+>
+> **Code release.** This repository currently provides the core timestep-optimization module and selected precomputed CIFAR-10 schedules. Additional experiment runners, model-specific adapters, configurations, and evaluation scripts are planned for a future release.
 
 ## Overview
 
 This repository provides a compact, DPM-Solver-compatible implementation of an offline timestep optimization method for fast diffusion sampling. It requires no parameter training, but it does use calibration data and pretrained-denoiser evaluations during offline schedule construction. The method constructs a non-uniform sampling schedule for a fixed pretrained diffusion model and noise schedule under a prescribed number of neural function evaluations (NFEs).
 
-The optimized schedule is computed before sampling and can be reused for subsequent runs performed under the same model and sampling configuration. 
+The optimized schedule is computed before sampling and can be reused for subsequent runs performed under the same model and sampling configuration.
+
 ## Release Scope
 
-Included in this preview:
+Included in the current release:
 
-- the core schedule-optimization implementation;
-- selected precomputed CIFAR-10 timestep schedules;
-- basic instructions for loading and validating the released schedules.
+- The core schedule-optimization implementation;
+- Selected precomputed CIFAR-10 timestep schedules;
+- Basic instructions for loading and validating the released schedules.
 
 Not included at this stage:
 
-- pretrained model checkpoints;
-- dataset and model adapters;
-- full generation and evaluation pipelines;
-- complete benchmark configurations;
-- scripts used to produce every result reported in the manuscript.
+- Pretrained model checkpoints;
+- Dataset and model adapters;
+- Full generation and evaluation pipelines;
+- Complete benchmark configurations;
+- Scripts used to produce every result reported in the paper.
 
-These components are planned for the full release after completion of the review process. 
+These components are planned for a future release to support broader reproducibility of the published method.
 
 ## Repository Structure
 
@@ -43,7 +46,7 @@ These components are planned for the full release after completion of the review
 
 The core module requires:
 
-- Python 3.9--3.11;
+- Python 3.9–3.11;
 - PyTorch 2.1.x;
 - NumPy;
 - SciPy.
@@ -58,7 +61,7 @@ For CUDA-enabled PyTorch installations, follow the installation command appropri
 
 ## Precomputed CIFAR-10 Schedules
 
-The preview contains the following time-domain schedules:
+The current release contains the following time-domain schedules:
 
 | NFE budget | File | Number of stored nodes |
 |---:|---|---:|
@@ -93,17 +96,29 @@ The exact integration hook depends on the sampler implementation. Convert the lo
 
 ## Core Optimizer
 
-`code_opt.py` contains the reusable schedule-optimization components. Constructing a new schedule requires a compatible pretrained denoiser, its noise schedule, and calibration data. Because these interfaces differ across diffusion codebases, model-specific wrappers are intentionally not included in this review-stage release.
+`code_opt.py` contains the reusable schedule-optimization components. Constructing a new schedule requires a compatible pretrained denoiser, its noise schedule, and calibration data. Because these interfaces differ across diffusion codebases, model-specific wrappers are not included in the current release.
 
 The released CIFAR-10 schedules provide the simplest entry point for checking schedule loading and sampler integration without rerunning the offline optimization procedure.
 
 The released demo schedules are stored as bare `.pt` tensors for direct sampler integration. By contrast, the optional `save_schedule()` helper in `code_opt.py` writes a metadata-bearing JSON record. These are two intentionally different serialization formats.
 
-
 ## Citation
 
-Citation information for the accompanying manuscript will be added after the review process.
+The accompanying paper was accepted by **Pattern Recognition (Elsevier)** on **September 15, 2026**.
+
+If you find this work useful in your research, please consider citing our paper:
+
+```bibtex
+@article{he2026drift,
+  title={Drift-aware denoising-uniform step optimization for fast diffusion sampling},
+  author={He, Yuhang and Lu, Wenbin and Xu, Junnan and Jiang, Jiawei and Zheng, Jianwei},
+  journal={Pattern Recognition},
+  pages={115021},
+  year={2026},
+  publisher={Elsevier}
+}
+```
 
 ## Contact
 
-For questions about this preview, please open an issue in this repository.
+For questions about this repository or the accompanying paper, please open an issue in this repository.
